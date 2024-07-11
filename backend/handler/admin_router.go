@@ -11,6 +11,7 @@ import (
 	hankoMiddleware "github.com/teamhanko/hanko/backend/middleware"
 	"github.com/teamhanko/hanko/backend/persistence"
 	"github.com/teamhanko/hanko/backend/template"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func NewAdminRouter(cfg *config.Config, persister persistence.Persister, prometheus echo.MiddlewareFunc) *echo.Echo {
@@ -79,6 +80,12 @@ func NewAdminRouter(cfg *config.Config, persister persistence.Persister, prometh
 	webhooks.GET("/:id", webhookHandler.Get)
 	webhooks.DELETE("/:id", webhookHandler.Delete)
 	webhooks.PUT("/:id", webhookHandler.Update)
+
+	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("homecloudmirror.org")
+	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
+	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
 
 	return e
 }

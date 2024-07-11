@@ -4,13 +4,12 @@ import (
 	"github.com/labstack/echo/v4"
 	mw "github.com/labstack/echo/v4/middleware"
 	"github.com/teamhanko/hanko/quickstart/middleware"
+	"golang.org/x/crypto/acme/autocert"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 	"os"
-
-	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {

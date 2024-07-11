@@ -12,11 +12,13 @@ import (
 func StartPublic(cfg *config.Config, wg *sync.WaitGroup, persister persistence.Persister, prometheus echo.MiddlewareFunc, authenticatorMetadata mapper.AuthenticatorMetadata) {
 	defer wg.Done()
 	router := handler.NewPublicRouter(cfg, persister, prometheus, authenticatorMetadata)
-	router.Logger.Fatal(router.Start(cfg.Server.Public.Address))
+	//router.Logger.Fatal(router.Start(cfg.Server.Public.Address))
+	router.Logger.Fatal(router.StartTLS(cfg.Server.Public.Address, "/etc/config/keys/server.crt", "/etc/config/keys/server.key"))
 }
 
 func StartAdmin(cfg *config.Config, wg *sync.WaitGroup, persister persistence.Persister, prometheus echo.MiddlewareFunc) {
 	defer wg.Done()
 	router := handler.NewAdminRouter(cfg, persister, prometheus)
-	router.Logger.Fatal(router.Start(cfg.Server.Admin.Address))
+	//router.Logger.Fatal(router.Start(cfg.Server.Admin.Address))
+	router.Logger.Fatal(router.StartTLS(cfg.Server.Admin.Address, "/etc/config/keys/server.crt", "/etc/config/keys/server.key"))
 }

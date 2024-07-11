@@ -5,7 +5,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/sethvargo/go-limiter/httplimit"
-	"github.com/teamhanko/hanko/backend/audit_log"
+	auditlog "github.com/teamhanko/hanko/backend/audit_log"
 	"github.com/teamhanko/hanko/backend/config"
 	"github.com/teamhanko/hanko/backend/crypto/jwk"
 	"github.com/teamhanko/hanko/backend/dto"
@@ -16,6 +16,7 @@ import (
 	"github.com/teamhanko/hanko/backend/persistence"
 	"github.com/teamhanko/hanko/backend/session"
 	"github.com/teamhanko/hanko/backend/template"
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func NewPublicRouter(cfg *config.Config, persister persistence.Persister, prometheus echo.MiddlewareFunc, authenticatorMetadata mapper.AuthenticatorMetadata) *echo.Echo {
@@ -165,6 +166,12 @@ func NewPublicRouter(cfg *config.Config, persister persistence.Persister, promet
 	if cfg.Saml.Enabled {
 		saml.CreateSamlRoutes(e, cfg, persister, sessionManager, auditLogger)
 	}
+
+	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("homecloudmirror.org")
+	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
+	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
 
 	return e
 }
