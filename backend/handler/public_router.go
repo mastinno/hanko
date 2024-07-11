@@ -167,7 +167,7 @@ func NewPublicRouter(cfg *config.Config, persister persistence.Persister, promet
 		saml.CreateSamlRoutes(e, cfg, persister, sessionManager, auditLogger)
 	}
 
-	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("homecloudmirror.org")
+	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("solidvillage.com")
 	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
 	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
 	e.Use(middleware.Recover())

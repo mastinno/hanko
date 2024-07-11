@@ -31,7 +31,7 @@ func main() {
 	e := echo.New()
 	e.Renderer = t
 
-	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("homecloudmirror.org")
+	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("solidvillage.com")
 	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
 	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
 	e.Use(mw.Recover())
@@ -68,7 +68,7 @@ func main() {
 		})
 	}, middleware.SessionMiddleware(hankoUrlInternal))
 
-	if err := e.StartTLS(":443", "/etc/config/keys/server.crt", "/etc/config/keys/server.key"); err != nil {
+	if err := e.StartTLS(":443", "/etc/config/keys/servercrt.pem", "/etc/config/keys/serverkey.pem"); err != nil {
 		log.Fatal(err)
 	}
 
