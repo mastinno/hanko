@@ -1,7 +1,7 @@
 database:
   user: hanko
   password: hanko
-  host: localhost
+  host: 10.0.0.205
   port: 5432
   dialect: postgres
 smtp:
@@ -16,3 +16,9 @@ secrets:
     - abcedfghijklmnopqrstuvwxyz
 service:
   name: Hanko Authentication Service
+webauthn:
+  relying_party:
+    id: "10.0.0.205"
+    display_name: "Hanko Authentication Service"
+    origins:
+      - "http://10.0.0.205"

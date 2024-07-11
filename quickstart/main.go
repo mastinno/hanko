@@ -9,6 +9,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+
+	"golang.org/x/crypto/acme/autocert"
 )
 
 func main() {
@@ -29,6 +31,12 @@ func main() {
 
 	e := echo.New()
 	e.Renderer = t
+
+	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("homecloudmirror.org")
+	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
+	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
+	e.Use(mw.Recover())
+	e.Use(mw.Logger())
 
 	e.Use(mw.LoggerWithConfig(mw.LoggerConfig{
 		Format: `{"time":"${time_rfc3339_nano}","time_unix":"${time_unix}","id":"${id}","remote_ip":"${remote_ip}",` +
@@ -61,9 +69,13 @@ func main() {
 		})
 	}, middleware.SessionMiddleware(hankoUrlInternal))
 
-	if err := e.Start(":8080"); err != nil {
+	if err := e.StartTLS(":443", "/etc/config/keys/server.crt", "/etc/config/keys/server.key"); err != nil {
 		log.Fatal(err)
 	}
+
+	//if err := e.Start(":8080"); err != nil {
+	//	log.Fatal(err)
+	//}
 }
 
 type IndexData struct {
