@@ -49,6 +49,8 @@ services:
       - intranet
   elements:
     build: ../../frontend
+    volumes:
+      - '/home/mastinno/Projects/hanko/quickstart/keys/:/etc/config/keys/'
     ports:
       - "9500:80"
     networks:
