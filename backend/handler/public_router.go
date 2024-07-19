@@ -16,7 +16,6 @@ import (
 	"github.com/teamhanko/hanko/backend/persistence"
 	"github.com/teamhanko/hanko/backend/session"
 	"github.com/teamhanko/hanko/backend/template"
-	"golang.org/x/crypto/acme/autocert"
 )
 
 func NewPublicRouter(cfg *config.Config, persister persistence.Persister, prometheus echo.MiddlewareFunc, authenticatorMetadata mapper.AuthenticatorMetadata) *echo.Echo {
@@ -166,12 +165,6 @@ func NewPublicRouter(cfg *config.Config, persister persistence.Persister, promet
 	if cfg.Saml.Enabled {
 		saml.CreateSamlRoutes(e, cfg, persister, sessionManager, auditLogger)
 	}
-
-	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("solidvillage.com")
-	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
-	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
-	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
 
 	return e
 }
