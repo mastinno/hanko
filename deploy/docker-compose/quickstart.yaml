@@ -19,7 +19,7 @@ services:
     restart: unless-stopped
     volumes:
       - '../../quickstart/keys/:/etc/config/keys/'
-      - '../../deploy/keys/:/etc/config/keys/'
+      - './nginx-reverse-proxy.conf:/etc/nginx/conf.d/default.conf'
     ports:
       - "443:443" # route to hanko API port 8000
       - "444:444" # route to hanko admin API port 8001

@@ -1,6 +1,7 @@
 package server
 
 import (
+	"github.com/labstack/echo/v4"
 	"github.com/teamhanko/hanko/backend/config"
 	"github.com/teamhanko/hanko/backend/handler"
 	"github.com/teamhanko/hanko/backend/mapper"
