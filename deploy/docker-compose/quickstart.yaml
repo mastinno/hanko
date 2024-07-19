@@ -13,6 +13,17 @@ services:
         condition: service_healthy
     networks:
       - intranet
+  solidvillage.com:
+    image: nginx:alpine
+    container_name: solidvillage.com
+    restart: unless-stopped
+    volumes:
+      - '../../quickstart/keys/:/etc/config/keys/'
+      - '../../deploy/keys/:/etc/config/keys/'
+    ports:
+      - "443:443" # route to hanko API port 8000
+      - "444:444" # route to hanko admin API port 8001
+      - "9500:9500" # route to hanko elements port 9500
   hanko:
     depends_on:
       hanko-migrate:
@@ -50,28 +61,24 @@ services:
       - intranet
   elements:
     build: ../../frontend
-    volumes:
-      - '/home/mastinno/Projects/hanko/quickstart/keys/:/etc/config/keys/'
     ports:
       - "9500:80"
     networks:
       - intranet
   quickstart:
     build: ../../quickstart
-    volumes:
-      - '/home/mastinno/Projects/hanko/quickstart/keys/:/etc/config/keys/'
     ports:
       - "8888:8080"
-      - "443:443"
     environment:
       - HANKO_URL=https://solidvillage.com:8000
-      - HANKO_URL_INTERNAL=http://hanko:8000
+      - HANKO_URL_INTERNAL=https://solidvillage.com:8000
       - HANKO_ELEMENT_URL=https://solidvillage.com:9500/elements.js
       - HANKO_FRONTEND_SDK_URL=https://solidvillage.com:9500/sdk.modern.js
     networks:
       - intranet
   mailslurper:
-    image: sha256:ac483385963e7dc577e39e4ed4009ee48f8721a4751d589be6309965a32c48ab
+#    image: marcopas/docker-mailslurper:latest
+    image: sha256:d4658691ed076161bb452f36b5948ee502fb3590181ec8f84813adbe49b45e4b
     ports:
       - '8080:8080' # web UI
       - '8085:8085'

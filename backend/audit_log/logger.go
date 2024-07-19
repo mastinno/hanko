@@ -99,6 +99,10 @@ func (l *logger) store(tx *pop.Connection, context echo.Context, auditLogType mo
 
 func (l *logger) logToConsole(context echo.Context, auditLogType models.AuditLogType, user *models.User, logError error) {
 	now := time.Now()
+	if logError != nil {
+		loggerErrorEvent := zeroLogger.Error().Stack().Err(logError)
+		loggerErrorEvent.Send()
+	}
 	loggerEvent := zeroLogger.Log().
 		Str("audience", "audit").
 		Str("type", string(auditLogType)).

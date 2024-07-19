@@ -499,7 +499,7 @@
       "properties": {
         "id": {
           "type": "string",
-          "default": "localhost"
+          "default": "solidvillage.com"
         },
         "display_name": {
           "type": "string",

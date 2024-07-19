@@ -24,7 +24,7 @@ webauthn:
     origins:
       - "https://solidvillage.com:8888"
       - "https://solidvillage.com:8000"
-      - "https://solidvillage.com" 
+      - "https://solidvillage.com"
 session:
   cookie:
     domain: "solidvillage.com"

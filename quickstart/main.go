@@ -4,7 +4,6 @@ import (
 	"github.com/labstack/echo/v4"
 	mw "github.com/labstack/echo/v4/middleware"
 	"github.com/teamhanko/hanko/quickstart/middleware"
-	"golang.org/x/crypto/acme/autocert"
 	"html/template"
 	"io"
 	"log"
@@ -30,12 +29,6 @@ func main() {
 
 	e := echo.New()
 	e.Renderer = t
-
-	e.AutoTLSManager.HostPolicy = autocert.HostWhitelist("solidvillage.com")
-	// Cache certificates to avoid issues with rate limits (https://letsencrypt.org/docs/rate-limits)
-	e.AutoTLSManager.Cache = autocert.DirCache("/tmp/.cache")
-	e.Use(mw.Recover())
-	e.Use(mw.Logger())
 
 	e.Use(mw.LoggerWithConfig(mw.LoggerConfig{
 		Format: `{"time":"${time_rfc3339_nano}","time_unix":"${time_unix}","id":"${id}","remote_ip":"${remote_ip}",` +
@@ -68,13 +61,9 @@ func main() {
 		})
 	}, middleware.SessionMiddleware(hankoUrlInternal))
 
-	if err := e.StartTLS(":443", "/etc/config/keys/servercrt.pem", "/etc/config/keys/serverkey.pem"); err != nil {
+	if err := e.Start(":8080"); err != nil {
 		log.Fatal(err)
 	}
-
-	//if err := e.Start(":8080"); err != nil {
-	//	log.Fatal(err)
-	//}
 }
 
 type IndexData struct {

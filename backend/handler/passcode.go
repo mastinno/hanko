@@ -9,7 +9,7 @@ import (
 	"github.com/lestrrat-go/jwx/v2/jwt"
 	zeroLogger "github.com/rs/zerolog/log"
 	"github.com/sethvargo/go-limiter"
-	"github.com/teamhanko/hanko/backend/audit_log"
+	auditlog "github.com/teamhanko/hanko/backend/audit_log"
 	"github.com/teamhanko/hanko/backend/config"
 	"github.com/teamhanko/hanko/backend/crypto"
 	"github.com/teamhanko/hanko/backend/dto"
