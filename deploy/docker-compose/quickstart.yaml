@@ -37,7 +37,7 @@ services:
         condition: service_completed_successfully
     build: ../../backend
     ports:
-      - '127.0.0.1:8000:8000' # public
+      - '8000:8000' # public
       - '127.0.0.1:8001:8001' # admin
     restart: unless-stopped
     command: serve --config /etc/config/config.yaml all
