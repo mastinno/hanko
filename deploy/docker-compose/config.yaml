@@ -22,8 +22,6 @@ webauthn:
   relying_party:
     id: "solidvillage.com"
     origins:
-      - "https://solidvillage.com:8888"
-      - "https://solidvillage.com:8000"
       - "https://solidvillage.com"
 session:
   cookie:
@@ -34,6 +32,4 @@ server:
   public:
     cors:
       allow_origins:
-        - "https://solidvillage.com:8888"
-        - "https://solidvillage.com:8000"
         - "https://solidvillage.com"

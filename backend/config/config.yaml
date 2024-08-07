@@ -18,7 +18,7 @@ service:
   name: Hanko Authentication Service
 webauthn:
   relying_party:
-    id: "solidvillage.com"
+    id: "https://solidvillage.com"
     display_name: "Hanko Authentication Service"
     origins:
       - "https://solidvillage.com"
